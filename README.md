@@ -14,6 +14,14 @@ chmod +x bootstrap.sh
 ./bootstrap.sh
 ```
 
+## 📦 Included Apps
+
+- NVM (Node version manager) https://github.com/nvm-sh/nvm
+- Neovim (Text editor)
+- Pyenv (Python env manager)
+- Github CLI + Copilot extension
+- Zsh (set as default shell) + Oh My Zsh
+
 ## 🔌 Included Plugins
 
 - git
@@ -27,6 +35,17 @@ chmod +x bootstrap.sh
 - gh
 - kubectl
 - zsh-shift-select
+
+## 🔤 Aliases
+
+- `alias copilot="gh copilot"`
+- `alias gcs="gh copilot suggest"`
+- `alias gce="gh copilot explain"`
+- `alias vim="nvim"`
+
+## 🖌️ Themes
+
+- Zsh: robbyrussell
 
 ## 🧼 Customize
 
