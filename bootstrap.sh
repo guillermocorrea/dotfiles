@@ -2,39 +2,53 @@
 
 set -e
 
-echo "🔍 Checking and installing dependencies..."
+# Define colors
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+YELLOW='\033[0;33m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+echo -e "${BLUE}🔍 Checking and installing dependencies...${NC}"
 
 # Install curl and software-properties-common if missing
 sudo apt update
 sudo apt install -y curl software-properties-common gnupg2 ca-certificates lsb-release
 
 # Install NVM
-if ! command -v nvm &> /dev/null; then
-  echo "📥 Installing NVM..."
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+if ! command -v node &> /dev/null; then
+  echo -e "${YELLOW}📥 Node.js not found. Installing NVM...${NC}"
+  if ! command -v nvm &> /dev/null; then
+    echo -e "${YELLOW}📥 Installing NVM...${NC}"
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+  else
+    echo -e "${GREEN}✔ NVM already installed. Installing Node.js...${NC}"
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    nvm install --lts
+  fi
 else
-  echo "✔ NVM already installed."
+  echo -e "${GREEN}✔ NVM already installed.${NC}"
 fi
 
 # Install Neovim
 if ! command -v nvim &> /dev/null; then
-  echo "📥 Installing Neovim..."
+  echo -e "${YELLOW}📥 Installing Neovim...${NC}"
   sudo apt install -y neovim
 else
-  echo "✔ Neovim already installed."
+  echo -e "${GREEN}✔ Neovim already installed.${NC}"
 fi
 
-# Install pyenv
-if ! command -v pyenv &> /dev/null; then
-  echo "📥 Installing pyenv..."
+if ! command -v python &> /dev/null && ! command -v python3 &> /dev/null && ! command -v pyenv &> /dev/null; then
+  echo -e "${YELLOW}📥 Installing pyenv...${NC}"
   curl https://pyenv.run | bash
 else
-  echo "✔ pyenv already installed."
+  echo -e "${GREEN}✔ pyenv already installed.${NC}"
 fi
 
 # Install GitHub CLI (gh)
 if ! command -v gh &> /dev/null; then
-  echo "📥 Installing GitHub CLI..."
+  echo -e "${YELLOW}📥 Installing GitHub CLI...${NC}"
   type -p curl >/dev/null || sudo apt install curl -y
   curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | \
     sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
@@ -46,21 +60,46 @@ if ! command -v gh &> /dev/null; then
   sudo apt update
   sudo apt install gh -y
 else
-  echo "✔ GitHub CLI already installed."
+  echo -e "${GREEN}✔ GitHub CLI already installed.${NC}"
+fi
+
+# Installing Github Copilot CLI
+if ! command -v gh copilot &> /dev/null; then
+  echo -e "${YELLOW}📥 Installing GitHub Copilot CLI...${NC}"
+  gh extension install github/gh-copilot
+else
+  echo -e "${GREEN}✔ GitHub Copilot CLI already installed.${NC}"
 fi
 
 # Installing oh-my-zsh and plugins...
 
-echo "🔧 Installing Oh My Zsh..."
+echo -e "${BLUE}🐚 Installing Zsh...${NC}"
+if ! command -v zsh &> /dev/null; then
+  echo -e "${YELLOW}📥 Installing Zsh...${NC}"
+  sudo apt install -y zsh
+else
+  echo -e "${GREEN}✔ Zsh already installed.${NC}"
+fi
+
+echo -e "${BLUE}🔄 Setting Zsh as default shell...${NC}"
+if [ "$SHELL" != "$(which zsh)" ]; then
+  echo -e "${YELLOW}📥 Changing default shell to Zsh...${NC}"
+  sudo chsh -s "$(which zsh)" "$USER"
+  echo -e "${GREEN}✔ Default shell changed to Zsh.${NC}"
+else
+  echo -e "${GREEN}✔ Zsh is already the default shell.${NC}"
+fi
+
+echo -e "${BLUE}🔧 Installing Oh My Zsh...${NC}"
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
   git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh
 else
-  echo "✔ Oh My Zsh already installed."
+  echo -e "${GREEN}✔ Oh My Zsh already installed.${NC}"
 fi
 
 ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
 
-echo "🔌 Installing plugins..."
+echo -e "${BLUE}🔌 Installing plugins...${NC}"
 
 plugins=(
   "zsh-users/zsh-autosuggestions"
@@ -72,13 +111,13 @@ for plugin in "${plugins[@]}"; do
   dest="$ZSH_CUSTOM/plugins/$name"
   if [ ! -d "$dest" ]; then
     git clone https://github.com/$plugin "$dest"
-    echo "✔ Installed $name"
+    echo -e "${GREEN}✔ Installed $name${NC}"
   else
-    echo "✔ $name already installed"
+    echo -e "${GREEN}✔ $name already installed${NC}"
   fi
 done
 
-echo "📦 Installing Oh My Zsh plugin snippets..."
+echo -e "${BLUE}📦 Installing Oh My Zsh plugin snippets...${NC}"
 
 declare -A ohmyzsh_plugins=(
   [web-search]="web-search"
@@ -87,8 +126,8 @@ declare -A ohmyzsh_plugins=(
   [docker]="docker"
   [docker-compose]="docker-compose"
   [gh]="gh"
-  [kubectl]="kubectl"
-  [zsh-shift-select]="zsh-shift-select"
+  # [kubectl]="kubectl"
+  # [zsh-shift-select]="zsh-shift-select"
 )
 
 for plugin in "${!ohmyzsh_plugins[@]}"; do
@@ -96,13 +135,13 @@ for plugin in "${!ohmyzsh_plugins[@]}"; do
   if [ ! -f "$file" ]; then
     mkdir -p "$ZSH_CUSTOM/plugins/$plugin"
     curl -fsSL "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/${plugin}/${plugin}.plugin.zsh" -o "$file"
-    echo "✔ Downloaded $plugin"
+    echo -e "${GREEN}✔ Downloaded $plugin${NC}"
   else
-    echo "✔ $plugin already present"
+    echo -e "${GREEN}✔ $plugin already present${NC}"
   fi
 done
 
-echo "🔗 Symlinking .zshrc"
+echo -e "${BLUE}🔗 Symlinking .zshrc${NC}"
 ln -sf "$PWD/.zshrc" "$HOME/.zshrc"
 
-echo "✅ Setup complete! Launch a new terminal or run: source ~/.zshrc"
+echo -e "${GREEN}✅ Setup complete! Launch a new terminal or run: source ~/.zshrc${NC}"

@@ -10,6 +10,7 @@ This repo sets up a Zsh environment with:
 ```bash
 git clone https://github.com/guillermocorrea/dotfiles.git ~/dotfiles
 cd ~/dotfiles
+chmod +x bootstrap.sh
 ./bootstrap.sh
 ```
 

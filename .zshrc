@@ -80,8 +80,8 @@ plugins=(
 	docker-compose 
 	docker 
 	gh
-	kubectl
-	zsh-shift-select
+	# kubectl
+	# zsh-shift-select
 	)
 
 source $ZSH/oh-my-zsh.sh
