@@ -1,75 +1,74 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
 {
-	"name": "Ubuntu",
-	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	// "image": "mcr.microsoft.com/devcontainers/base:noble"
-	"build": {
-		"dockerfile": "Dockerfile",
-		"context": "..",
-		"args": {
-			// Update this if you intend to use a different base image.
-			// "VARIANT": "focal"
-		}
-	},
+  "name": "Ubuntu",
+  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+  // "image": "mcr.microsoft.com/devcontainers/base:noble"
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "..",
+    "args": {
+      // Update this if you intend to use a different base image.
+      // "VARIANT": "focal"
+    }
+  },
 
-	"customizations": {
-    	"vscode": {
-      		"settings": {
-				"editor.defaultFormatter": "ms-dotnettools.csharp",
-				"docker.images.label": "FullTag",
-				"git.confirmSync": false,
-				"sonarlint.rules": {
-					"csharpsquid:S3011": {
-					"level": "off"
-					},
-					"csharpsquid:S2368": {
-					"level": "off"
-					}
-				},
-				"[xml]": {
-					"editor.defaultFormatter": "redhat.vscode-xml"
-				},
-				"[json]": {
-					"editor.defaultFormatter": "esbenp.prettier-vscode"
-				},
-				"terminal.integrated.defaultProfile.linux": "zsh",
-				"[dockerfile]": {
-					"editor.defaultFormatter": "ms-azuretools.vscode-docker"
-				},
-				"dev.containers.mountWaylandSocket": false,
-				"editor.formatOnSave": true
-			},
-      		"extensions": [
-				"esbenp.prettier-vscode",
-				"graphql.vscode-graphql-syntax",
-				"ms-dotnettools.csdevkit",
-				"ms-dotnettools.csharp",
-				"ms-dotnettools.vscode-dotnet-runtime",
-				"editorconfig.editorconfig",
-				"eamodio.gitlens",
-				"ms-azuretools.vscode-docker",
-				"sonarsource.sonarlint-vscode",
-				"bradlc.vscode-tailwindcss",
-				"meta.relay",
-				"redhat.vscode-xml",
-				"streetsidesoftware.code-spell-checker"
-			]
-    	}
-  	},
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "docker.images.label": "FullTag",
+        "git.confirmSync": false,
+        "sonarlint.rules": {
+          "csharpsquid:S3011": {
+            "level": "off"
+          },
+          "csharpsquid:S2368": {
+            "level": "off"
+          }
+        },
+        "[xml]": {
+          "editor.defaultFormatter": "redhat.vscode-xml"
+        },
+        "[json]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "[dockerfile]": {
+          "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+        },
+        "dev.containers.mountWaylandSocket": false,
+        "editor.formatOnSave": true
+      },
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "graphql.vscode-graphql-syntax",
+        "ms-dotnettools.csdevkit",
+        "ms-dotnettools.csharp",
+        "ms-dotnettools.vscode-dotnet-runtime",
+        "editorconfig.editorconfig",
+        "eamodio.gitlens",
+        "ms-azuretools.vscode-docker",
+        "sonarsource.sonarlint-vscode",
+        "bradlc.vscode-tailwindcss",
+        "meta.relay",
+        "redhat.vscode-xml"
+      ]
+    }
+  }
 
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  // "features": {},
 
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  // "forwardPorts": [],
 
-	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "uname -a",
+  // Use 'postCreateCommand' to run commands after the container is created.
+  // "postCreateCommand": "uname -a",
 
-	// Configure tool-specific properties.
-	// "customizations": {},
+  // Configure tool-specific properties.
+  // "customizations": {},
 
-	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "root"
+  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+  // "remoteUser": "root"
 }
