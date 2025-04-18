@@ -175,7 +175,7 @@ else
 fi
 
 echo "📦 Bootstrapping LazyVim..."
-vim --headless "+Lazy! sync" +qa
+#vim --headless "+Lazy! sync" +qa
 
 echo "✅ Neovim and LazyVim setup complete!"
 
