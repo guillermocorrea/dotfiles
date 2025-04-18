@@ -21,9 +21,6 @@ if ! command -v node &> /dev/null; then
   if ! command -v nvm &> /dev/null; then
     echo -e "${YELLOW}📥 Installing NVM...${NC}"
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-    sudo chown -R $USER "$HOME/.nvm"
-    nvm install --lts
-    nvm use --lts
     echo -e "${GREEN}✔ NVM installed successfully!${NC}"
   else
     echo -e "${GREEN}✔ NVM already installed. Installing Node.js...${NC}"
@@ -253,3 +250,20 @@ else
 fi
 
 echo -e "${GREEN}✅ Setup complete! Launch a new terminal or run: source ~/.zshrc${NC}"
+
+# launch zsh
+if [ -n "$ZSH_VERSION" ]; then
+  echo -e "${GREEN}🔄 Launching Zsh...${NC}"
+  exec zsh
+else
+  echo -e "${YELLOW}⚠️ Zsh is not the current shell. Please restart your terminal.${NC}"
+fi
+echo -e "${GREEN}🚀 Enjoy your new development environment!${NC}"
+
+# install nodejs lts
+if ! command -v node &> /dev/null; then
+  echo -e "${YELLOW}📥 Installing Node.js LTS...${NC}"
+  nvm install --lts
+else
+  echo -e "${GREEN}✔ Node.js LTS already installed.${NC}"
+fi
