@@ -82,10 +82,12 @@ else
 fi
 
 echo -e "${BLUE}🔄 Setting Zsh as default shell...${NC}"
-if [ "$SHELL" != "$(which zsh)" ]; then
+if [ "$SHELL" != "$(which zsh)" ] && [ -n "$USER" ]; then
   echo -e "${YELLOW}📥 Changing default shell to Zsh...${NC}"
   sudo chsh -s "$(which zsh)" "$USER"
   echo -e "${GREEN}✔ Default shell changed to Zsh.${NC}"
+elif [ -z "$USER" ]; then
+  echo -e "${YELLOW}⚠️ USER variable not set, skipping shell change${NC}"
 else
   echo -e "${GREEN}✔ Zsh is already the default shell.${NC}"
 fi
@@ -181,5 +183,58 @@ echo "✅ Neovim and LazyVim setup complete!"
 
 echo "🔗 Symlinking .zshrc"
 ln -sf "$PWD/.zshrc" "$HOME/.zshrc"
+
+# Add Nerd Font installation
+echo -e "${BLUE}🔤 Installing Nerd Font...${NC}"
+FONT_DIR="$HOME/.local/share/fonts"
+mkdir -p "$FONT_DIR"
+
+# Choose your preferred font - JetBrains Mono is popular for coding
+FONT_NAME="JetBrainsMono"
+FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/$FONT_NAME.zip"
+
+if [ ! -f "$FONT_DIR/${FONT_NAME}NerdFont-Regular.ttf" ]; then
+  echo -e "${YELLOW}📥 Downloading $FONT_NAME Nerd Font...${NC}"
+  TEMP_DIR=$(mktemp -d)
+  wget -q --show-progress -O "$TEMP_DIR/$FONT_NAME.zip" "$FONT_URL"
+  unzip -q "$TEMP_DIR/$FONT_NAME.zip" -d "$FONT_DIR"
+  rm -rf "$TEMP_DIR"
+  
+  # Update font cache
+  if command -v fc-cache &> /dev/null; then
+    echo -e "${YELLOW}🔄 Updating font cache...${NC}"
+    fc-cache -f "$FONT_DIR"
+  fi
+  
+  echo -e "${GREEN}✅ Nerd Font installed successfully!${NC}"
+  echo -e "${YELLOW}ℹ️ You may need to configure your terminal to use the new font.${NC}"
+else
+  echo -e "${GREEN}✔ $FONT_NAME Nerd Font already installed${NC}"
+fi
+
+# Attempt to configure GNOME Terminal font
+if command -v gsettings &> /dev/null && command -v gnome-terminal &> /dev/null; then
+  echo -e "${BLUE}🔧 Attempting to set GNOME Terminal font...${NC}"
+  # Get default profile UUID (remove single quotes)
+  PROFILE_UUID=$(gsettings get org.gnome.Terminal.ProfilesList default | tr -d "'")
+  if [ -n "$PROFILE_UUID" ]; then
+    PROFILE_PATH="/org/gnome/terminal/legacy/profiles:/:$PROFILE_UUID/"
+    # Check if the profile path is valid
+    if gsettings list-keys "org.gnome.Terminal.Legacy.Profile:$PROFILE_PATH" &> /dev/null; then
+      echo -e "${YELLOW}⚙️ Setting font for profile: $PROFILE_UUID${NC}"
+      # Set font (adjust size '11' if needed)
+      FONT_SETTING="'${FONT_NAME} Nerd Font 11'"
+      gsettings set "org.gnome.Terminal.Legacy.Profile:$PROFILE_PATH" use-system-font false
+      gsettings set "org.gnome.Terminal.Legacy.Profile:$PROFILE_PATH" font "$FONT_SETTING"
+      echo -e "${GREEN}✅ GNOME Terminal font set to $FONT_SETTING (may require terminal restart)${NC}"
+    else
+       echo -e "${YELLOW}⚠️ Could not find GNOME Terminal profile path: $PROFILE_PATH${NC}"
+    fi
+  else
+    echo -e "${YELLOW}⚠️ Could not get default GNOME Terminal profile UUID.${NC}"
+  fi
+else
+  echo -e "${YELLOW}ℹ️ Skipping GNOME Terminal font configuration (gsettings/gnome-terminal not found).${NC}"
+fi
 
 echo -e "${GREEN}✅ Setup complete! Launch a new terminal or run: source ~/.zshrc${NC}"
