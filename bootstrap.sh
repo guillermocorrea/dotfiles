@@ -143,9 +143,6 @@ done
 
 echo "🔧 Setting up Neovim (LazyVim) config..."
 
-mkdir -p "$HOME/.config"
-ln -sf "$PWD/.config/nvim" "$HOME/.config/nvim"
-
 echo "🔍 Installing Neovim CLI dependencies..."
 
 sudo apt install -y fzf ripgrep fd-find gcc g++ make unzip tree-sitter
@@ -158,11 +155,20 @@ if ! command -v fd &> /dev/null && command -v fdfind &> /dev/null; then
   export PATH="$HOME/.local/bin:$PATH"
 fi
 
+if [ ! -d "$HOME/.config/nvim" ]; then
+  echo "📥 No existing Neovim config. Cloning LazyVim starter..."
+  git clone https://github.com/LazyVim/starter "$HOME/.config/nvim"
+  rm -rf "$HOME/.config/nvim/.git"
+else
+  echo "🔗 Linking Neovim config from dotfiles..."
+  mkdir -p "$HOME/.config"
+  ln -sf "$PWD/.config/nvim" "$HOME/.config/nvim"
+fi
+
 echo "📦 Bootstrapping LazyVim..."
-nvim --headless "+Lazy! sync" +qa
+vim --headless "+Lazy! sync" +qa
 
 echo "✅ Neovim and LazyVim setup complete!"
-
 
 echo "🔗 Symlinking .zshrc"
 ln -sf "$PWD/.zshrc" "$HOME/.zshrc"
