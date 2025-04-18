@@ -15,7 +15,31 @@
 
 	"customizations": {
     	"vscode": {
-      		"settings": {},
+      		"settings": {
+				"editor.defaultFormatter": "ms-dotnettools.csharp",
+				"docker.images.label": "FullTag",
+				"git.confirmSync": false,
+				"sonarlint.rules": {
+					"csharpsquid:S3011": {
+					"level": "off"
+					},
+					"csharpsquid:S2368": {
+					"level": "off"
+					}
+				},
+				"[xml]": {
+					"editor.defaultFormatter": "redhat.vscode-xml"
+				},
+				"[json]": {
+					"editor.defaultFormatter": "esbenp.prettier-vscode"
+				},
+				"terminal.integrated.defaultProfile.linux": "zsh",
+				"[dockerfile]": {
+					"editor.defaultFormatter": "ms-azuretools.vscode-docker"
+				},
+				"dev.containers.mountWaylandSocket": false,
+				"editor.formatOnSave": true
+			},
       		"extensions": [
 				"esbenp.prettier-vscode",
 				"graphql.vscode-graphql-syntax",
@@ -28,6 +52,7 @@
 				"sonarsource.sonarlint-vscode",
 				"bradlc.vscode-tailwindcss",
 				"meta.relay",
+				"redhat.vscode-xml",
 				"streetsidesoftware.code-spell-checker"
 			]
     	}
