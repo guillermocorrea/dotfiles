@@ -141,7 +141,30 @@ for plugin in "${!ohmyzsh_plugins[@]}"; do
   fi
 done
 
-echo -e "${BLUE}🔗 Symlinking .zshrc${NC}"
+echo "🔧 Setting up Neovim (LazyVim) config..."
+
+mkdir -p "$HOME/.config"
+ln -sf "$PWD/.config/nvim" "$HOME/.config/nvim"
+
+echo "🔍 Installing Neovim CLI dependencies..."
+
+sudo apt install -y fzf ripgrep fd-find gcc g++ make unzip tree-sitter
+
+# Fix fd binary name (Ubuntu/Debian uses `fdfind`)
+if ! command -v fd &> /dev/null && command -v fdfind &> /dev/null; then
+  echo "🔗 Symlinking fd -> fdfind"
+  mkdir -p "$HOME/.local/bin"
+  ln -sf "$(which fdfind)" "$HOME/.local/bin/fd"
+  export PATH="$HOME/.local/bin:$PATH"
+fi
+
+echo "📦 Bootstrapping LazyVim..."
+nvim --headless "+Lazy! sync" +qa
+
+echo "✅ Neovim and LazyVim setup complete!"
+
+
+echo "🔗 Symlinking .zshrc"
 ln -sf "$PWD/.zshrc" "$HOME/.zshrc"
 
 echo -e "${GREEN}✅ Setup complete! Launch a new terminal or run: source ~/.zshrc${NC}"
