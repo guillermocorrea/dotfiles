@@ -21,6 +21,10 @@ if ! command -v node &> /dev/null; then
   if ! command -v nvm &> /dev/null; then
     echo -e "${YELLOW}📥 Installing NVM...${NC}"
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+    sudo chown -R $USER "$HOME/.nvm"
+    nvm install --lts
+    nvm use --lts
+    echo -e "${GREEN}✔ NVM installed successfully!${NC}"
   else
     echo -e "${GREEN}✔ NVM already installed. Installing Node.js...${NC}"
     export NVM_DIR="$HOME/.nvm"
@@ -29,6 +33,17 @@ if ! command -v node &> /dev/null; then
   fi
 else
   echo -e "${GREEN}✔ NVM already installed.${NC}"
+fi
+
+# Install .NET SDK
+if ! command -v dotnet &> /dev/null; then
+  echo -e "${YELLOW}📥 Installing .NET SDK...${NC}"
+  wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
+  chmod +x dotnet-install.sh
+  ./dotnet-install.sh --channel STS
+  rm dotnet-install.sh
+else
+  echo -e "${GREEN}✔ .NET SDK already installed.${NC}"
 fi
 
 # Install Neovim
