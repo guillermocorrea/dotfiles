@@ -52,6 +52,8 @@
         "sonarsource.sonarlint-vscode",
         "bradlc.vscode-tailwindcss",
         "meta.relay",
+        "github.vscode-github-actions",
+        "redhat.vscode-yaml",
         "redhat.vscode-xml"
       ]
     }
