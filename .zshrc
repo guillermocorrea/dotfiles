@@ -134,3 +134,5 @@ eval "$(pyenv init --path)"
 # NVIM Path
 export PATH="$PATH:/opt/nvim/"
 
+# Dotnet
+export PATH="$PATH:$HOME/.dotnet/"

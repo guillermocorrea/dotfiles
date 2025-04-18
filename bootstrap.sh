@@ -51,7 +51,7 @@ else
   echo -e "${GREEN}✔ Neovim already installed.${NC}"
 fi
 
-if ! command -v python &> /dev/null && ! command -v python3 &> /dev/null && ! command -v pyenv &> /dev/null; then
+if ! command -v pyenv &> /dev/null; then
   echo -e "${YELLOW}📥 Installing pyenv...${NC}"
   curl https://pyenv.run | bash
 else
