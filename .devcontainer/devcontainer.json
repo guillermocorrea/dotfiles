@@ -13,6 +13,26 @@
 		}
 	},
 
+	"customizations": {
+    	"vscode": {
+      		"settings": {},
+      		"extensions": [
+				"esbenp.prettier-vscode",
+				"graphql.vscode-graphql-syntax",
+				"ms-dotnettools.csdevkit",
+				"ms-dotnettools.csharp",
+				"ms-dotnettools.vscode-dotnet-runtime",
+				"editorconfig.editorconfig",
+				"eamodio.gitlens",
+				"ms-azuretools.vscode-docker",
+				"sonarsource.sonarlint-vscode",
+				"bradlc.vscode-tailwindcss",
+				"meta.relay",
+				"streetsidesoftware.code-spell-checker"
+			]
+    	}
+  	},
+
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
 
