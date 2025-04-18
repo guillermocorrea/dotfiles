@@ -141,40 +141,6 @@ for plugin in "${!ohmyzsh_plugins[@]}"; do
   fi
 done
 
-# LazyGit
-
-echo "🔍 Checking for lazygit..."
-
-if ! command -v lazygit &> /dev/null; then
-  echo "📥 Installing lazygit..."
-
-  # Install dependencies
-  sudo apt install -y wget git tar
-
-  # Get latest version info
-  LAZYGIT_VERSION=$(curl -s https://api.github.com/repos/jesseduffield/lazygit/releases/latest \
-    | grep "tag_name" | cut -d '"' -f4)
-
-  ARCH=$(uname -m)
-  case "$ARCH" in
-    x86_64) ARCH_DL="Linux_x86_64.tar.gz" ;;
-    aarch64 | arm64) ARCH_DL="Linux_arm64.tar.gz" ;;
-    *) echo "❌ Unsupported architecture: $ARCH"; exit 1 ;;
-  esac
-
-  LAZYGIT_URL="https://github.com/jesseduffield/lazygit/releases/download/${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_${ARCH_DL}"
-
-  mkdir -p "$HOME/.local/bin"
-  wget -O lazygit.tar.gz "$LAZYGIT_URL"
-  tar -xzf lazygit.tar.gz lazygit
-  mv lazygit "$HOME/.local/bin/"
-  rm lazygit.tar.gz
-
-  echo "✅ lazygit installed at ~/.local/bin/lazygit"
-else
-  echo "✔ lazygit already installed"
-fi
-
 # Add ~/.local/bin to PATH if not already
 if ! echo "$PATH" | grep -q "$HOME/.local/bin"; then
   echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.zshrc"
@@ -188,7 +154,7 @@ echo "🔧 Setting up Neovim (LazyVim) config..."
 
 echo "🔍 Installing Neovim CLI dependencies..."
 
-sudo apt install -y fzf ripgrep fd-find gcc g++ make unzip tree-sitter
+sudo apt install -y fzf ripgrep fd-find gcc g++ make unzip
 
 # Fix fd binary name (Ubuntu/Debian uses `fdfind`)
 if ! command -v fd &> /dev/null && command -v fdfind &> /dev/null; then
